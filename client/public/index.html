@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+    <script src="https://unpkg.com/vuex@3.4.0/dist/vuex.js"></script>
+    <title>HR table</title>
+</head>
+<body>
+    <div id="app">
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                  <th scope="col">ФИО</th>
+                  <th scope="col">Должность</th>
+                  <th scope="col">Оклад</th>
+                  <th scope="col">Статус</th>
+                  <th scope="col">Дата приема на работу</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(employee, index) in employees">
+                  <td v-for="(col, secondIndex) in employee">
+                    <div v-show="!col.isLocalEditing" v-if="col.isEditing"> / {{col.value}} / </div>
+                    <div v-show="!col.isLocalEditing" v-else @dblclick="editField(index, col, secondIndex)">  {{col.value}}  </div>
+                    <div v-show="col.isLocalEditing" @dblclick="saveField(index, col, secondIndex)">
+                      <select v-model="col.value" v-if="secondIndex === 'status'">
+                        <option value="Соискатель">Соискатель</option>
+                        <option value="Сотрудник">Сотрудник</option>
+                        <option value="Уволен">Уволен</option>
+                      </select>
+                      <input v-else v-model="col.value">
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+        </table>
+        
+      <button class="btn btn-primary ml-4" @click="addEntry">Добавить запись</button>
+    </div>
+    
+    
+    <script src="main.js"></script>
+</body>
+</html>
